@@ -1,0 +1,9 @@
+O script install.sh faz a instalação dos pacotes necessários, como mysql,etc.. 
+
+Por definição, o programa utiliza o comando apt-get install para instalar os pacotes, mas sera alterado para yum install se detectar que existe um comando yum. outros instaladores podem ser adicionados caso necessário.
+
+Em teoria, rodar o install.sh deveria deixar o servidor pronto para o funcionamento, sem a necessidade de outras alterações no server... Em teoria.
+
+Verificar que é necessário fazer um direcionamento em modem/firewall para acessar o banco de dados, além de configurar manualmente o crontab para executar os scripts que forem desejados
+
+ 
