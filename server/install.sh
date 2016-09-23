@@ -15,7 +15,12 @@ if [[ $(which yum) ]]; then
 	instalar='yum install'
 fi
 
-# Inicialmente, apenas o mysql se faz necessario
 $instalar -y mysql-server
 
 mysql -u'root' -p < scripts_sql/database_init.sql
+
+read -p "Deseja alterar o mysql para receber conexões externas?(s/N)" option
+if [[ $option == 's' ]]; then
+	sed -i 's/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+	echo "caso seja necessário, realizar direcionamento de portas no firewall"
+fi

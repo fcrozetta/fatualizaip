@@ -1,4 +1,12 @@
-Este projeto se destina a criar uma forma de atualização dos endereços de ip em uma base de dados do server. Cada client possuirá um script que busca o endereço ip externo que possui e o envia para uma base de dados no server em um tempo determinado.
+O projeto ainda não esta funcionando!
 
-Para facilitar a manutenção que o suporte técnico dá, a princípio não será usado um daemon para agendar estas atualizações, mas deve ser adicionada uma entrada no crontab do root.
+Este projeto se destina a criar uma forma de atualização dos endereços ip de servidores de clientes em uma base de dados do server.
+Cada client possuirá um script que busca o endereço ip externo que possui e o envia para uma base de dados no server em um tempo determinado.
+No banco de dados são contidos os seguintes dados:
+alias       : Nome dado ao client para facilitar a busca (unico, e usado como chave primária)
+ip          : Endereço externo do client que deve ser atualizado periódicamente
+tempoUpdate : tempo em minutos entre um update e outro
+ultimoUpdate: timestamp do ultimo update, atualizado junto com o ip
 
+por comodidade o processo não será colocado como um daemon(ao menos por enquanto).
+O script deve rodar no rc.local do servidor, ou equivalente.

@@ -2,9 +2,6 @@
 # Autor: Fernando H. Crozetta
 # Data : 16/09/2016
 # Descricao: O script realiza a instalacao do maximo possivel automaticamente.
-#				É necessário adicionar o script dentro do crontab para que os dados
-#				sejam entregues de forma periódica corretamente
-#	OBS: Nesta primeira versao a linha de comando do crontab deve ser executada no tempo definido
 
 if [[ $EUID -ne 0 ]]; then
 	echo "you need to be root"
@@ -17,20 +14,17 @@ if [[ $(which yum) ]]; then
 	instalar='yum install'
 fi
 
-# Inicialmente, apenas o mysql se faz necessario
-$instalar -y mysql-client
+# Instalação de programas necessários
+$instalar -y lynx mysql-client
 
 diretorio_default='/usr/local/share/fatualizaip'
 mkdir -p $diretorio_default
 config=$diretorio_default/config
 
-
 echo "#Gerado automaticamente. nao alterar" > $config
 echo "diretorio=$( cd $(dirname $0) ; pwd -P)" >> $config
-echo "mysql_config=$diretorio/mysql_config" >> $config
 
 chmod 600 $config
-chmod 600 $mysql_config
 
 # Dados que serao passados ao server remoto:
 read -p "Alias do servidor: " nome
@@ -43,4 +37,17 @@ read -p "Mysql Usuario      :" mysql_usuario
 read -p "Mysql IP           :" mysql_ip
 read -p "Mysql Porta(3306)  :" mysql_porta
 echo "Senha para conexao no banco de dados remoto:"
+
+#copia para o diretorio correto
+cp fatualizaip.sh $diretorio_default/
+
+# Configura um login sem deixar usuario e senha expostos
 mysql_config_editor set --login-path=fatualizaip --host=$mysql_ip --user=$mysql_usuario --port=$mysql_porta --password
+echo "criando dados no server"
+mysql --login-path=fatualizaip -e"insert into fatualizaip.dados_servers set alias='$nome', ip='$(lynx --dump http://ipecho.net/plain)',tempoUpdate='$tempo',ultimoUpdate=current_timestamp;"
+
+#adiciona uma linha ao final do rc.local (é preciso checar se esta ok no arquivo)
+read -p "deseja adicionar uma linha ao rc.local?(s/N)"option
+if [[ $option =="s" ]]; then
+	sed -i "s/^exit 0/$diretorio_default\/fatualizaip.sh \&\nexit 0/" /etc/rc.local
+fi
