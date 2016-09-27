@@ -29,5 +29,5 @@ read -p "Deseja adicionar o usuario fatualiza ao banco de dados? (s/N)" option
 if [[ $option == "s" ]]; then
 	read -p "Usuario para client: " usuario_client
 	read -sp "Senha para client : " senha_client
-	./scripts_apoio/add_user.sh $usuario_client $senha_client
+	bash ./scripts_apoio/add_user.sh $usuario_client $senha_client
 fi
