@@ -6,6 +6,4 @@
 
 usuario="$1"
 senha="$2"
-mysql -u root -p fatualizaip -e "create user '$1'@'%' identified by '$2';"
-mysql -u root -p fatualizaip -e "grant update on fatualizaip.dados_servers to '$1'@'%' identified by '$2';"
-mysql -u root -p fatualizaip -e "flush privileges;"
+mysql -u root -p fatualizaip -e "create user '$1'@'%' identified by '$2';grant select,insert,update on fatualizaip.dados_servers to '$1'@'%' identified by '$2';flush privileges;"
