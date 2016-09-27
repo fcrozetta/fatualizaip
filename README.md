@@ -1,5 +1,3 @@
-O projeto ainda não esta funcionando!
-
 Este projeto se destina a criar uma forma de atualização dos endereços ip de servidores de clientes em uma base de dados do server.
 Cada client possuirá um script que busca o endereço ip externo que possui e o envia para uma base de dados no server em um tempo determinado.
 No banco de dados são contidos os seguintes dados:
